@@ -2,12 +2,18 @@ import axios from 'axios';
 
 const url = 'https://covid19.mathdro.id/api';
 
-export const fetchData = async () => {
+export const fetchData = async (country) => {
+  let changeableUrl = url;
+
+  if (country) {
+    changeableUrl = `${url}/countries/${country}`;
+  }
+
   try {
     //destructuring data from response to get only the data I need
     //destructuring each option from data so I don't have to repeat data.confirmed, data.recovered
     //when I declare the filteredData object
-    const { data: { confirmed, recovered, deaths, lastUpdate } } = await axios.get(url);
+    const { data: { confirmed, recovered, deaths, lastUpdate } } = await axios.get(changeableUrl);
 
     const filteredData = {
       //if the key has the same name as its value
@@ -29,7 +35,7 @@ export const fetchData = async () => {
     //and there's no need to declare the const filteredData
 
   } catch (error) {
-
+    console.log(error);
   }
 }
 
